@@ -104,6 +104,33 @@ angular
       });
     },
 
+    addInitialize: function(opts) {
+
+      opts = opts || {};
+
+      return $q(function(resolve, reject) {
+
+        var kind = opts.kind || '';
+        if (kind === '') {
+          return reject(new Error('kind is empty'));
+        }
+
+        $apiService
+        .get('/initialize/entity/'+kind)
+        .then(function(data) {
+          var config = getEntityConfig(kind);
+          if (config === undefined) {
+            reject({
+              message: 'Entity configuration not found for {{kind}}',
+              params: { kind: kind }
+            });
+          } else {
+            resolve(data);
+          }
+        }, reject);
+      });
+    },
+
     showForm: function(opts) {
       var kind = opts.kind;
       var key = opts.key;

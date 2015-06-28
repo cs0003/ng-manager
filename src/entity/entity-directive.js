@@ -10,14 +10,12 @@ angular
       var kind = scope.kind;
 
       scope.add = function() {
-        if (scope.schema.initialKey) {
-          scope.key = scope.schema.initialKey;
+        if (scope.schema.addInitialize) {
           $entityService
-          .get({ kind: kind, key: scope.key })
+          .addInitialize({ kind: kind })
           .then(function(data) {
             $entityService.showForm({
               kind: kind,
-              key: scope.key,
               entity: data
             });
           }, function(err) {

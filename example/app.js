@@ -74,7 +74,7 @@ var specs = {
       },
       primaryKey: ['userId'],
       required: ['userId','firstName','lastName'],
-      initialKey: "initial",
+      addInitialize: true,
     },
 
     features: {
@@ -409,14 +409,16 @@ app.get('/entity/:kind', function(req, res) {
   });
 });
 
+app.get('/initialize/entity/:kind', function(req, res) {
+    item = {"userId": "user_new"};
+    res.json(item);
+});
+
 app.get('/entity/:kind/:keys', function(req, res) {
   var kind = req.params.kind;
   var keys = req.params.keys.split(',');
   var item = find(kind, keys);
   if (item) {
-    res.json(item);
-  } else if (keys[0] == 'initial') {
-    item = {"userId": "user_new"};
     res.json(item);
   } else {
     res.status(404).end();
